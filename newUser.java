@@ -23,7 +23,21 @@ public class newUser {
 				}
 				else 
 					System.out.println("Invalid name. Please enter letters only.");
-			} 
+			}  
+			String pp = "^[0-9]{10}$";
+			Pattern phonepatter = Pattern.compile(pp);
+			while(true) {
+				System.out.println("Enter Your Mobile number:");
+				String phonenumber = in.next(); 
+				Matcher phonematch = phonepatter.matcher(String.valueOf(phonenumber));
+				if(phonematch.matches()) {
+						userDetails.add(phonenumber);
+					break;
+				}
+				else {
+					System.out.println("Invalid Number. Please enter numbers only.");
+				}
+			}
 			in.close();
 		return userDetails;
 	}
