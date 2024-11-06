@@ -59,6 +59,23 @@ public class newUser {
 			        System.out.println("Please enter the date in DD/MM/YYYY format.");
 			    }
 			}
+			while(true) {
+				System.out.println("-------------- Choice your Account Type ---------------");
+				System.out.println("1. Current Account\n2.Savings Account");
+				System.out.println("Enter your option (1/2): ");
+				int op = in.nextInt();
+				if(op==1) {
+						System.out.println("You selected ----> Current Account");
+						userDetails.add("Current Account");
+					break;
+				}else if(op==2) {
+						System.out.println("You selected ----> Savings Account");
+						userDetails.add("Savings Account");
+					break;
+				}else {
+					System.out.println("Invalid Choice. Please enter any one (1 or 2).");
+				}
+			}
 			in.close();
 		return userDetails;
 	}
