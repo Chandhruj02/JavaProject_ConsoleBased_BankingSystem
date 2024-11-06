@@ -38,6 +38,27 @@ public class newUser {
 					System.out.println("Invalid Number. Please enter numbers only.");
 				}
 			}
+			while (true) {
+			    System.out.println("Enter Your Date of Birth (dd/MM/yyyy): ");
+			    String dob = in.next();
+			    if (dob.length() == 10 && dob.charAt(2) == '/' && dob.charAt(5) == '/') {
+			        try {
+			            int day = Integer.parseInt(dob.substring(0, 2));
+			            int month = Integer.parseInt(dob.substring(3, 5));
+			            int year = Integer.parseInt(dob.substring(6, 10));
+			            if (day >= 1 && day <= 31 && month >= 1 && month <= 12 && year >=1930) {	        
+			                userDetails.add(dob); 
+			                break; 
+			            } else {
+			                System.out.println("The date is not valid. Please enter a correct day and month.");
+			            }
+			        } catch (NumberFormatException e) {
+			            System.out.println("The date contains invalid numbers.");
+			        }
+			    } else {
+			        System.out.println("Please enter the date in DD/MM/YYYY format.");
+			    }
+			}
 			in.close();
 		return userDetails;
 	}
