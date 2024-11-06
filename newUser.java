@@ -76,6 +76,61 @@ public class newUser {
 					System.out.println("Invalid Choice. Please enter any one (1 or 2).");
 				}
 			}
+			String userName = (String) userDetails.get(0);
+			String phoneNumber = (String) userDetails.get(1);
+			String userId = userName.substring(0,4)+phoneNumber.substring(6);
+			userDetails.add(userId);
+			Random ram=new Random();
+			long accNumber = ram.nextLong(1000000,9999999);
+			userDetails.add(accNumber);
+			System.out.println("-------------------------------------------------------");
+			System.out.println("--Your Account Number and UserId for Login is created--");
+			System.out.println("-------------------------------------------------------\n");
+			String passp = "^(?=.*[0-9])[a-zA-Z0-9]{8}$";
+			Pattern passwordPattern = Pattern.compile(passp);
+			while(true) {
+					System.out.println("You Have to Set Password for furture Login Purpose");
+					System.out.println("\nPassword Should\n-Must Contain 8 Characters\n-Must Contain atleast one Number\n-Should not Contain Characters");
+					System.out.println("\nEnter new password: ");
+					String password = in.next();
+					Matcher passmatch = passwordPattern.matcher(password);
+					if(passmatch.matches()) {
+							userDetails.add(password);
+							System.out.println("Your password has been successfully set!");
+						break;
+					}else {
+						System.out.println("Invalid Password. (Password Must Contain 8 Characters includes Number not Symbols)");
+					}
+			}
+			System.out.println("Your Account Creation is going to Finish!");
+			while(true) {
+				System.out.println("\nEnter Your Inital Deposite Amount (Above 500): ");
+				int initalamount = in.nextInt();
+				if(initalamount > 500) {
+					System.out.println("Amount Added to your Account");
+					userDetails.add(initalamount);
+					break;
+				}else {
+					System.out.println("Invalid amount");
+				}
+			}
+			System.out.println(userDetails);
+			System.out.println("------------------------------------------------------");
+			System.out.println("------------Successfully Account Created!-------------");
+			System.out.println("------------------------------------------------------");
+			System.out.println("Account Holder Details:");
+			System.out.println("Name: "+userDetails.get(0));
+			System.out.println("Phone Number: "+userDetails.get(1));
+			System.out.println("DOB: "+userDetails.get(2));
+			System.out.println("------------------------------------------------------");
+			System.out.println(userDetails.get(0)+"'s Bank Account Details:");
+			System.out.println("Account Type: "+userDetails.get(3));
+			System.out.println("Account UserId: "+userDetails.get(4));
+			System.out.println("Account Number: "+userDetails.get(5));
+			System.out.println("Inital Amount Deposited: "+userDetails.get(7));
+			System.out.println("------------------------------------------------------");
+			System.out.println("Kindly Note this UserId for Furture Login\n(Account Number: "+userDetails.get(4)+")");
+			System.out.println("------------------------------------------------------");
 			in.close();
 		return userDetails;
 	}
