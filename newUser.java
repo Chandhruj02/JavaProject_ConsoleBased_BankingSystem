@@ -108,10 +108,10 @@ public class newUser {
 			System.out.println("Your Account Creation is going to Finish!");
 			while(true) {
 				System.out.println("\nEnter Your Inital Deposite Amount (Above 500): ");
-				int initalamount = in.nextInt();
+				Double initalamount = in.nextDouble();
 				if(initalamount > 500) {
 					System.out.println("Amount Added to your Account");
-					userDetails.add(initalamount);
+					userDetails.add((double) initalamount);
 					break;
 				}else {
 					System.out.println("Invalid amount");
@@ -127,10 +127,12 @@ public class newUser {
 			    if (age >= 18) {
 			        System.out.println("Please enter your annual salary: ");
 			        double salary = in.nextDouble();
-			        userDetails.add(salary);
+			        in.nextLine();
+			        userDetails.add((double) salary);
 			        break;
 			    } else {
 			        System.out.println("You are below 18, salary input is skipped.");
+			        userDetails.add((double) 0);
 			        break;
 			    }
 			}
@@ -151,7 +153,7 @@ public class newUser {
 			System.out.println("------------------------------------------------------");
 			System.out.println("Kindly Note this UserId for Furture Login\n(Account Number: "+userDetails.get(4)+")");
 			System.out.println("------------------------------------------------------");
-			in.close();
+			//in.close();
 		return userDetails;
 	}
 }
