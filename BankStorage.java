@@ -9,9 +9,9 @@ public class BankStorage {
         String password = "!";  
         boolean isConnected = false;
         try (Connection connection = DriverManager.getConnection(jdbcUrl, username, password)) {
-            System.out.println("Connection to the Bank Database (Oracle Database)");
+            System.out.println("Connection to the Bank Database (Oracle Database) was successful!");
             isConnected = true;
-        }catch (Exception e) {
+        } catch (Exception e) {
             System.err.println("Error occurred while connecting to the Bank Database:");
             e.printStackTrace();
         }

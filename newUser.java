@@ -1,6 +1,9 @@
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class newUser {
@@ -113,6 +116,23 @@ public class newUser {
 				}else {
 					System.out.println("Invalid amount");
 				}
+			}
+			while (true) {
+			    String dob = (String) userDetails.get(2);
+			    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+			    LocalDate birthDate = LocalDate.parse(dob, formatter);
+			    LocalDate currentDate = LocalDate.now();
+			    int age = Period.between(birthDate, currentDate).getYears();
+			    System.out.println("Your age is: " + age);
+			    if (age >= 18) {
+			        System.out.println("Please enter your annual salary: ");
+			        double salary = in.nextDouble();
+			        userDetails.add(salary);
+			        break;
+			    } else {
+			        System.out.println("You are below 18, salary input is skipped.");
+			        break;
+			    }
 			}
 			System.out.println(userDetails);
 			System.out.println("------------------------------------------------------");
