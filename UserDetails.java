@@ -34,5 +34,4 @@ public class UserDetails {
 		public double getBalance() { return balance; }
 		public LinkedList<Double> getDeposite() { return deposite; }
 		public LinkedList<Double> getWithdraw() { return withdraw; }
-
 }
