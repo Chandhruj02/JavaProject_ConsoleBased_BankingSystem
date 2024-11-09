@@ -33,7 +33,15 @@ public class Main {
 							break;
 						}
 						case 2:{
-							System.out.println("under Construction");
+							ExistingUser eu = new ExistingUser();
+							ArrayList<Object> fetchedUserDetails = eu.getExistingUser();
+							System.out.println("------------------------------------------------------");
+							System.out.println("             Welcome Back! "+fetchedUserDetails.get(0)+"       ");
+							System.out.println("------------------------------------------------------");
+							System.out.println("Account Type: " +fetchedUserDetails.get(3));
+							System.out.println("Account Number: " +fetchedUserDetails.get(5));
+							System.out.println("Press any key to return to the main menu...");
+	                        in.nextLine();
 							break;
 						}
 						case 3:{

@@ -1,15 +1,16 @@
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class BankStorage {
     
     public boolean checkBankConnection() {
-        String jdbcUrl = "!";
-        String username = "!";
-        String password = "!";
+        String jdbcUrl = "!"; 
+        String username = "!";                    
+        String password = "!";  
         boolean isConnected = false;
         try (Connection connection = DriverManager.getConnection(jdbcUrl, username, password)) {
             System.out.println("Connection to the Bank Database (Oracle Database) was successful!");
@@ -23,9 +24,9 @@ public class BankStorage {
     
     public boolean insertUserData(ArrayList<Object> userDetails) {
          
-        String jdbcUrl = "!";
-        String username = "!";
-        String password = "!";
+        String jdbcUrl = "!"; 
+        String username = "!";                    
+        String password = "!";  
         boolean isInserted = false;
 
         String sql = "INSERT INTO UserAccount (userName, phoneNumber, dob, accountType, userId, accountNumber, password, balance, salary) "
@@ -56,6 +57,46 @@ public class BankStorage {
         }
         return isInserted;
     }
+     
+    public ArrayList<Object> fetchUserDetails(String userId, String enteredPassword) {
+        String jdbcUrl = "!"; 
+        String username = "!";                    
+        String password = "!";  
+        ArrayList<Object> userDetails = new ArrayList<>();
+        String sql = "SELECT * FROM UserAccount WHERE userId = ?";
+        try (Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, userId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                String dbPassword = resultSet.getString("password");
+
+                if (dbPassword.equals(enteredPassword)) {
+                    System.out.println("Password matched. Fetching user details...");
+                    userDetails.add(resultSet.getString("userName"));       // userName
+                    userDetails.add(resultSet.getString("phoneNumber"));   // phoneNumber
+                    userDetails.add(resultSet.getDate("dob"));             // dob
+                    userDetails.add(resultSet.getString("accountType"));   // accountType
+                    userDetails.add(resultSet.getString("userId"));        // userId
+                    userDetails.add(resultSet.getLong("accountNumber"));   // accountNumber
+                    userDetails.add(resultSet.getDouble("balance"));       // balance
+                    userDetails.add(resultSet.getDouble("salary"));        // salary
+                } else {
+                    System.out.println("Password mismatch. Access denied.");
+                }
+            } else {
+                System.out.println("No user found with userId: " + userId);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Error while fetching user details.");
+        }
+
+        return userDetails;
+    }
+
 
 }
 
