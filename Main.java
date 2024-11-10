@@ -35,13 +35,17 @@ public class Main {
 						case 2:{
 							ExistingUser eu = new ExistingUser();
 							ArrayList<Object> fetchedUserDetails = eu.getExistingUser();
-							System.out.println("------------------------------------------------------");
-							System.out.println("             Welcome Back! "+fetchedUserDetails.get(0)+"       ");
-							System.out.println("------------------------------------------------------");
-							System.out.println("Account Type: " +fetchedUserDetails.get(3));
-							System.out.println("Account Number: " +fetchedUserDetails.get(5));
-							System.out.println("Press any key to return to the main menu...");
-	                        in.nextLine();
+							if(fetchedUserDetails != null) {
+								System.out.println("------------------------------------------------------");
+								System.out.println("             Welcome Back! "+fetchedUserDetails.get(0)+"       ");
+								System.out.println("------------------------------------------------------");
+								System.out.println("Account Type: " +fetchedUserDetails.get(3));
+								System.out.println("Account Number: " +fetchedUserDetails.get(5));	
+								System.out.println("Press any key to return to the main menu...");
+		                        in.nextLine();
+							}else {
+								continue;
+							}
 							break;
 						}
 						case 3:{

@@ -10,12 +10,11 @@ public class ExistingUser {
 			System.out.println("-------------------------------------------------------");
 			System.out.println("------------------- Existing User ---------------------");
 			System.out.println("-------------------------------------------------------");
-			System.out.println("Enter Your UserId:");
-			String userId = in.next();
-			System.out.println("Enter Your Password:");
-			String password = in.next();
-			userDetails = bank.fetchUserDetails(userId,password);
-		return userDetails;
+			userDetails = bank.fetchUserDetails();
+			if(userDetails != null && !userDetails.isEmpty()) {
+				return userDetails;
+			}
+		return null;
 		
 	}
 

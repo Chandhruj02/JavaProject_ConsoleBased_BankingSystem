@@ -4,13 +4,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class BankStorage {
     
+	Scanner in = new Scanner(System.in);
+	
     public boolean checkBankConnection() {
         String jdbcUrl = "!"; 
         String username = "!";                    
-        String password = "!";  
+        String password = "!";    
         boolean isConnected = false;
         try (Connection connection = DriverManager.getConnection(jdbcUrl, username, password)) {
             System.out.println("Connection to the Bank Database (Oracle Database) was successful!");
@@ -26,7 +29,7 @@ public class BankStorage {
          
         String jdbcUrl = "!"; 
         String username = "!";                    
-        String password = "!";  
+        String password = "!";   
         boolean isInserted = false;
 
         String sql = "INSERT INTO UserAccount (userName, phoneNumber, dob, accountType, userId, accountNumber, password, balance, salary) "
@@ -58,7 +61,7 @@ public class BankStorage {
         return isInserted;
     }
      
-    public ArrayList<Object> fetchUserDetails(String userId, String enteredPassword) {
+    public ArrayList<Object> fetchUserDetails() {
         String jdbcUrl = "!"; 
         String username = "!";                    
         String password = "!";  
@@ -66,27 +69,36 @@ public class BankStorage {
         String sql = "SELECT * FROM UserAccount WHERE userId = ?";
         try (Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setString(1, userId);
+        	System.out.println("Enter your UserId: ");
+        	String userId = in.next();
+        	preparedStatement.setString(1, userId);
+        	
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
                 String dbPassword = resultSet.getString("password");
-
-                if (dbPassword.equals(enteredPassword)) {
-                    System.out.println("Password matched. Fetching user details...");
-                    userDetails.add(resultSet.getString("userName"));       // userName
-                    userDetails.add(resultSet.getString("phoneNumber"));   // phoneNumber
-                    userDetails.add(resultSet.getDate("dob"));             // dob
-                    userDetails.add(resultSet.getString("accountType"));   // accountType
-                    userDetails.add(resultSet.getString("userId"));        // userId
-                    userDetails.add(resultSet.getLong("accountNumber"));   // accountNumber
-                    userDetails.add(resultSet.getDouble("balance"));       // balance
-                    userDetails.add(resultSet.getDouble("salary"));        // salary
-                } else {
-                    System.out.println("Password mismatch. Access denied.");
+                boolean isPasswordCorrect = false;
+                while(!isPasswordCorrect) {
+	                	System.out.println("Enter your Password: ");
+	                	String enteredPassword = in.next();
+	                	if (dbPassword.equals(enteredPassword)) {
+	                		System.out.println("Password matched. Fetching user details...");
+	                		userDetails.add(resultSet.getString("userName"));       // userName
+	                		userDetails.add(resultSet.getString("phoneNumber"));   // phoneNumber
+	                		userDetails.add(resultSet.getDate("dob"));             // dob
+	                		userDetails.add(resultSet.getString("accountType"));   // accountType
+	                		userDetails.add(resultSet.getString("userId"));        // userId
+	                		userDetails.add(resultSet.getLong("accountNumber"));   // accountNumber
+	                		userDetails.add(resultSet.getDouble("balance"));       // balance
+	                		userDetails.add(resultSet.getDouble("salary"));        // salary
+	                		isPasswordCorrect = true;
+	                	} else { 
+	                		System.out.println("Password mismatch. Access denied.");
+	                	}
                 }
             } else {
                 System.out.println("No user found with userId: " + userId);
+                return userDetails;
             }
 
         } catch (SQLException e) {
