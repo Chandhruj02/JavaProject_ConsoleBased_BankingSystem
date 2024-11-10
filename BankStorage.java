@@ -9,11 +9,11 @@ import java.util.Scanner;
 public class BankStorage {
     
 	Scanner in = new Scanner(System.in);
+    String jdbcUrl = "!"; 
+    String username = "!";                    
+    String password = "!"; 
 	
-    public boolean checkBankConnection() {
-        String jdbcUrl = "!"; 
-        String username = "!";                    
-        String password = "!";    
+    public boolean checkBankConnection() { 
         boolean isConnected = false;
         try (Connection connection = DriverManager.getConnection(jdbcUrl, username, password)) {
             System.out.println("Connection to the Bank Database (Oracle Database) was successful!");
@@ -25,11 +25,7 @@ public class BankStorage {
         return isConnected;
     }
     
-    public boolean insertUserData(ArrayList<Object> userDetails) {
-         
-        String jdbcUrl = "!"; 
-        String username = "!";                    
-        String password = "!";   
+    public boolean insertUserData(ArrayList<Object> userDetails) { 
         boolean isInserted = false;
 
         String sql = "INSERT INTO UserAccount (userName, phoneNumber, dob, accountType, userId, accountNumber, password, balance, salary) "
@@ -61,10 +57,7 @@ public class BankStorage {
         return isInserted;
     }
      
-    public ArrayList<Object> fetchUserDetails() {
-        String jdbcUrl = "!"; 
-        String username = "!";                    
-        String password = "!";  
+    public ArrayList<Object> fetchUserDetails() { 
         ArrayList<Object> userDetails = new ArrayList<>();
         String sql = "SELECT * FROM UserAccount WHERE userId = ?";
         try (Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
@@ -109,6 +102,84 @@ public class BankStorage {
         return userDetails;
     }
 
+    public void withdrawAmount() {
+        ArrayList<Object> userDetails = fetchUserDetails(); 
+        if (userDetails == null || userDetails.isEmpty()) {
+            System.out.println("User authentication failed. Returning to the main menu.");
+            return;
+        }
+        System.out.println("------------------------------------------------------");
+        System.out.println("------------------ Withdraw Amount -------------------");
+        System.out.println("------------------------------------------------------");
+        double currentBalance = (double) userDetails.get(6); 
+        System.out.println("Your current balance is: " + currentBalance);
+        System.out.println("Enter the amount to withdraw: ");
+        double amountToWithdraw = in.nextDouble();
+
+        if (amountToWithdraw > 0 && amountToWithdraw <= currentBalance) {
+            double newBalance = currentBalance - amountToWithdraw;
+            String sql = "UPDATE UserAccount SET balance = ? WHERE userId = ?";
+
+            try (Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
+                 PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setDouble(1, newBalance);
+                preparedStatement.setString(2, (String) userDetails.get(4)); // userId
+                int rowsUpdated = preparedStatement.executeUpdate();
+
+                if (rowsUpdated > 0) {
+                    System.out.println("Withdrawal successful! Your new balance is: " + newBalance);
+                } else {
+                    System.out.println("Failed to update balance. Please try again later.");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                System.out.println("Error while processing withdrawal.");
+            }
+        } else {
+            System.out.println("Invalid amount. Withdrawal canceled.");
+        }
+    }
+
+    public void depositAmount() {
+        ArrayList<Object> userDetails = fetchUserDetails(); 
+        if (userDetails == null || userDetails.isEmpty()) {
+            System.out.println("User authentication failed. Returning to the main menu.");
+            return;
+        }
+        System.out.println("------------------------------------------------------");
+        System.out.println("------------------- Deposit Amount -------------------");
+        System.out.println("------------------------------------------------------");
+        double currentBalance = (double) userDetails.get(6); 
+        System.out.println("Your current balance is: " + currentBalance);
+
+        System.out.println("Enter the amount to deposit: ");
+        double amountToDeposit = in.nextDouble();
+
+        if (amountToDeposit > 0) {
+            double newBalance = currentBalance + amountToDeposit;
+            String sql = "UPDATE UserAccount SET balance = ? WHERE userId = ?";
+
+            try (Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
+                 PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setDouble(1, newBalance);
+                preparedStatement.setString(2, (String) userDetails.get(4)); 
+                int rowsUpdated = preparedStatement.executeUpdate();
+
+                if (rowsUpdated > 0) {
+                    System.out.println("Deposit successful! Your new balance is: " + newBalance);
+                } else {
+                    System.out.println("Failed to update balance. Please try again later.");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                System.out.println("Error while processing deposit.");
+            }
+        } else {
+            System.out.println("Invalid amount. Deposit canceled.");
+        }
+    }
+
+    
 
 }
 
