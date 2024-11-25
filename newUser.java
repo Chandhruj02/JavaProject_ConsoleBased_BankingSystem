@@ -82,7 +82,7 @@ public class newUser {
 			String userName = (String) userDetails.get(0);
 			String phoneNumber = (String) userDetails.get(1);
 			String userId = userName.substring(0,4)+phoneNumber.substring(6);
-			userDetails.add(userId);
+			userDetails.add(userId.toLowerCase());
 			Random ram=new Random();
 			long accNumber = ram.nextLong(1000000,9999999);
 			userDetails.add(accNumber);
@@ -136,7 +136,7 @@ public class newUser {
 			        break;
 			    }
 			}
-			System.out.println(userDetails);
+			//System.out.println(userDetails);
 			System.out.println("------------------------------------------------------");
 			System.out.println("------------Successfully Account Created!-------------");
 			System.out.println("------------------------------------------------------");
