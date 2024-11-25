@@ -11,14 +11,14 @@ public class newUser {
 	ArrayList<Object> generateNewUser(){
 		ArrayList<Object> userDetails = new ArrayList<>();
 		Scanner in = new Scanner(System.in); 
-			String np = "^[A-Za-z]+$"; 
+			String np = "^[A-Za-z ]+$"; 
 			Pattern namePattern = Pattern.compile(np);
 			System.out.println("-------------------------------------------------------");
 			System.out.println("----------------New User Regestritation----------------");
 			System.out.println("-------------------------------------------------------");
 			while(true) {
 				System.out.println("Enter Your Full Name:");
-				String name = in.next();
+				String name = in.nextLine();
 				Matcher namematch = namePattern.matcher(name);
 				if(namematch.matches()) {
 					userDetails.add(name);
